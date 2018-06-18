@@ -214,18 +214,10 @@ def choose(words: List[str], logger) -> Tuple:
 def do(pluginApi):
     start = datetime.now()
 
-    api = pluginApi.getTwitterAccount().getTweepyHandler()
-    db = pluginApi.getMongoDB().getCollection("bot")
-    config = pluginApi.config.secret
-    apiKey = config.YahooAPIKey
-    imasDict = generateImasNounDict()
-    bannedVia = config.Miria["banned_via"]
-    bannedWord = config.Miria["banned_word"]
-    logger = pluginApi.getLogger()
-
+   
     # 15回のみ再試行
     lastId: int = None
-    for i in range(15):
+    for i in range(5):
         t = api.home_timeline(count=100, max_id=lastId)
         lastId = t[-1].id
         random.shuffle(t)
@@ -248,7 +240,7 @@ def do(pluginApi):
 
             # 今回のツイートをDBに投げる
             finish = datetime.now()
-            return db.MiriaYannaiyo.insert({
+            return db.3percent_miho.insert({
                 "sec": (finish - start).total_seconds(),
                 "datetime": finish.strftime("%m/%d %H:%M:%S"),
                 "tweetLink": f"https://twitter.com/{tweet.author.screen_name}/status/{tweet.id}",
