@@ -1,0 +1,7 @@
+# coding=utf-8
+from pychroner import PluginMeta, PluginType
+
+@PluginMeta(PluginType.TwitterEventFollow, twitterAccount="3percent_miho")
+def do(pluginApi, stream):
+    if stream["target"]["screen_name"] == "3percent_miho":
+        pluginApi.getTwitterAccount().getTweepyHandler().create_friendship(user_id=stream["source"]["id"])
